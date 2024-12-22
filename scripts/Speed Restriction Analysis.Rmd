@@ -1,0 +1,393 @@
+---
+title: "MBTA Speed Restriction Analysis"
+author: "Joshua Soriano"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+  word_document: default
+date: '2023-05-08'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r import_data, echo=FALSE, warning=FALSE}
+# import the data sets
+library(readr)
+MBTA_Rapid_Transit_Speed_Restrictions <- 
+  read_csv("../data/MBTA_Rapid_Transit_Speed_Restrictions.csv", show_col_types = FALSE)
+MBTA_Rapid_Transit_Speed_Restrictions_February_2023 <- 
+  read_csv("../data/MBTA_Rapid_Transit_Speed_Restrictions_February_2023.csv", 
+           show_col_types = FALSE)
+
+# remove characters from restriction speed column and convert to numeric
+MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Speed_MPH <- 
+  gsub(" mph","", as.character(MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Speed_MPH))
+MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Speed_MPH <-
+  as.numeric(MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Speed_MPH)
+
+MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Speed_MPH <- 
+  gsub(" mph","", as.character(MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Speed_MPH))
+MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Speed_MPH <-
+  as.numeric(MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Speed_MPH)
+```
+
+## Introduction
+The MBTA (Massachusetts Bay Transportation Authority) is a transit-oriented organization whose goal is the development and operation of Massachusetts' transit-related systems. It is both the oldest and largest transit system in Massachusetts. Its influence is so large, that it reaches all the way back to the 1800s. Today, the MBTA continues to hold strong, serving almost 200 cities and over a million daily riders.
+
+## Data
+I found the data for my project on the MBTA data portal, where it was readily available to download as a CSV file. The data is available as public domain at https://mbta-massdot.opendata.arcgis.com. The data contains information relating to the speed restrictions on the MBTA railway for all of January and February, in the year 2023.
+
+In my project I will be performing an analysis on both data sets, both of which contain information regarding speed restriction date of implementation, length in miles, days active, restriction reason, restriction speed, restriction distance, restriction count, restriction days to clear, restriction days active, and the track line in which the speed restriction is active on. In particular I will be closely analyzing these variables, and create and analyze the models based on this data to find correlations. There is some data missing in the restriction days to clear and restriction days active columns, which would indicate the value is not applicable for that row in particular.
+
+## Research Questions
+1.	What is the total restriction distance for each line? What is the primary restriction reason for each line? How many speed restrictions were put in place due to track wear and tear? 
+2.	Has the average restriction distance decreased between January and February? What about restriction speed? (Hypothesis testing)
+3.	Can we construct a reliable linear regression model that displays the correlation between the speed restriction values for both data sets? (Modeling)
+4.	Is there a difference in the average maximum restriction speed applied to each branch? (Chi-square test)
+
+## 1 Speed Restrictions on the MBTA
+```{r section_1.1, out.width = "50%", fig.show = "hold", echo=FALSE, message=FALSE, warning=FALSE}
+#load packages
+library(ggplot2)
+library(scales)
+library(dplyr)
+
+# base plots
+MBTAplot <- ggplot(MBTA_Rapid_Transit_Speed_Restrictions)
+MBTAplot2 <- ggplot(MBTA_Rapid_Transit_Speed_Restrictions_February_2023)
+
+# Create bar plot, summing total restriction distance in miles for January
+MBTAplot +
+  geom_histogram(aes(factor(Branch), 
+                     y = sum(Restriction_Distance_Miles)), 
+                 stat = "identity") +
+  scale_y_continuous(breaks = seq(0, 250, 10)) +
+  xlab("Branch") +
+  ylab("Total Restriction Distance in Miles") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 3))
+
+# Create bar plot, summing total track distance in miles for January
+MBTAplot +
+  geom_histogram(aes(factor(Branch), sum(Total_Track_Miles)), 
+                 stat = "identity") +
+  scale_y_continuous(labels = comma, breaks = seq(0, 50000, 5000)) +
+  xlab("Branch") +
+  ylab("Total Track Section Length in Miles") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 3))
+
+# Repeat for February
+MBTAplot2 +
+  geom_histogram(aes(factor(Branch), 
+                     y = sum(Restriction_Distance_Miles)), 
+                 stat = "identity") +
+  scale_y_continuous(labels = comma, breaks = seq(0, 2000, 100)) +
+  xlab("Branch") +
+  ylab("Total Restriction Distance in Miles") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 3))
+
+MBTAplot2 +
+  geom_histogram(aes(factor(Branch), sum(Total_Track_Miles)), 
+                 stat = "identity") +
+  scale_y_continuous(labels = comma, breaks = seq(0, 500000, 25000)) +
+  xlab("Branch") +
+  ylab("Total Track Section Length in Miles") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 3))
+```
+Figure 1.1: Left: Restriction distance per line. Right: Total track section length per branch.
+
+The total track length in which the speed restriction is applied can be seen in
+Figure 1.1. It is worth noting that the Red Line easily has the most restriction
+distance, with the Mattapan line having the least restriction distance.
+Strangely enough, despite having vastly different scales for the y-axis, the plots for restriction distance and total track length are virtually identical. This can only mean the restriction distance is directly proportional to track length. This is the case despite the fact that no speed restrictions were reported on the Blue Line in January, and only appearing in February
+
+It would be reasonable to conclude that a normal distribution would not be appropriate for these graphs, given they would have an irregular bell-shaped curve even if they were rearranged.
+Furthermore, since the Central Limit Theorem (CLT) states that a normal 
+distribution requires at least 30 samples, a t-distribution would be a more 
+viable candidate as a model.
+
+```{r section_1.2, out.width = "50%", fig.show = "hold", echo = FALSE, warning = FALSE}
+# Plot jitter graph for Line, Branch, and Restriction Reason
+
+MBTAplot +
+  geom_jitter(aes(Line, Branch, 
+                  color = factor(Restriction_Reason)), width = 0.4, 
+              height = 0.4,
+              stat = "identity") +
+  scale_color_discrete(name = "Restriction Reason", 
+                       labels = c('Construction Work', 'Track Wear and Tear', 'Vehicle Blockage')) +
+  labs(title = "January") +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  theme(legend.position="none")
+
+MBTAplot2 +
+  geom_jitter(aes(Line, Branch, 
+                  color = factor(Restriction_Reason)), width = 0.4, 
+              height = 0.4,
+              stat = "identity") +
+  scale_color_discrete(name = "Restriction Reason", 
+                       labels = c('Construction Work', 'Track Wear and Tear', 
+                                 'Vehicle Blockage')) +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2)) +
+  labs(title = "February")
+```
+|    Restriction Reason    |
+|:----------|:-----------:|
+|Red|Construction Work|
+|Green|Track Wear and Tear|
+|Blue|Vehicle Blockage|
+
+Figure 1.2: Restriction Reason Per Line and Branch for January and February
+
+The graph for Figure 1.2 indicates track wear and tear being the primary reason
+for the speed restriction being applied, with there being only a few instances
+of construction work. There are more instances of vehicle blockage being
+the main reason for the speed restriction being applied, although it is worth
+noting that this appears to be the case only for the Orange Line, in both
+January and February.
+
+Though track wear seems to have a sudden influx on the Blue Line, for the most part the distribution in which a speed restriction has been
+applied remained largely the same. This is especially true for the Red Line,
+which has suffered the most speed restrictions in both months of January and
+February.
+
+## 2 Difference Between Mean Restriction Speed and Distance for January and February
+
+Restriction speeds are put in place in order to ensure rider safety, and as discussed in the section above, they are
+applied mainly due to track wear and tear. Depending on how the situation regarding track maintenance is handled,
+transit authorities may feel the need to alter said restrictions as they see fit, in order to adapt to any
+unforeseen circumstances. For further analysis, we will take a look at the mean restriction speeds for January and 
+February, and see if there exists evidence proving they changed significantly.
+
+First consider the following hypothesis test regarding the mean restriction speeds. The data was extracted using the 
+summary function. Since the samples are large enough, we can justify a Z test.
+
+|Hypothesis Testing: Comparing Mean Restriction Speeds|
+|:---------------------            |:---------------: |
+|Sample Size (January)             |70                |
+|Sample Size (February)            |168               |
+|Mean Restriction Speed (January)  |$\mu_1$           |  
+|Mean Restriction Speed (February) |$\mu_2$           |
+|Null Hypothesis                   |$H_0:\mu_1=\mu_2$ |
+|Alternate Hypothesis              |$H_a:\mu_1<\mu_2$ |
+
+For the above values, we have a p-value of 0.6283. Since this is greater than the $\alpha$ value of 0.05, we fail to
+reject the null hypothesis, and conclude that the mean restriction speed has not, in fact, changed over the course of
+two months. Though the severity of the speed restriction has not increased, we can conclude that for the most part,
+transit authorities felt the need to maintain these restrictions over the coming month for passenger safety and further
+track maintenance.
+
+```{r Figure_2.1, echo = FALSE}
+# barplots for restriction distance in both months
+MBTAplot + geom_bar(aes(ObjectId, Restriction_Speed_MPH, fill = Restriction_Speed_MPH), stat = "identity") +
+  guides(fill="none") +
+  xlab("Speed Restriction Report ID") +
+  ylab("Restriction Speed (mph)") +
+  scale_x_continuous(breaks = seq(0, 70, 5)) +
+  geom_smooth(aes(ObjectId, Restriction_Speed_MPH), method = "lm")
+
+MBTAplot2 + geom_bar(aes(ObjectId, Restriction_Speed_MPH, fill = Restriction_Speed_MPH), stat = "identity") +
+  guides(fill="none") +
+  xlab("Speed Restriction Report ID") +
+  ylab("Restriction Speed (mph)") +
+  scale_x_continuous(breaks = seq(0, 168, 5), guide = guide_axis(n.dodge = 3)) +
+  geom_smooth(aes(ObjectId, Restriction_Speed_MPH), method = "lm")
+
+```
+Figure 2.1: Histograms detailing the restriction speeds by report ID, for January and February 2023.
+
+Observe that for the figure above, the speed restrictions have set speeds. Through observation one can see how the mean
+restriction speed would stay consistent, given that the trend line is almost flat for January, and completely flat for
+February. Note that the gray area emanated by the trend line represents the confidence interval. It is even possible
+to observe the consistent mean speed restriction simply by taking note of the set speeds each bar represents.
+
+Next, consider the following hypothesis test regarding mean restriction distance.
+
+|Hypothesis Testing: Comparing Mean Restriction Distances|
+|:---------------------            |:---------------: |
+|Sample Size (January)             |70                |
+|Sample Size (February)            |168               |
+|Mean Restriction Speed (January)  |$\mu_1$           |  
+|Mean Restriction Speed (February) |$\mu_2$           |
+|Null Hypothesis                   |$H_0:\mu_1=\mu_2$ |
+|Alternate Hypothesis              |$H_a:\mu_1<\mu_2$ |
+
+For the data above, we have a p-value of 0.8848, which is significantly greater than $\alpha=0.5$. Thus we fail to
+reject the null hypothesis, and must therefore conclude the mean distance in which the speed restriction is applicable
+has not changed between the two months.
+
+```{r Figure_2.2, out.width = "50%", fig.show = "hold", echo = FALSE}
+# barplot for restriction distance in both months
+MBTAplot + geom_bar(aes(ObjectId, Restriction_Distance_Miles, fill = Restriction_Distance_Miles), stat = "identity") +
+  guides(fill="none") +
+  xlab("Track Section ID") +
+  ylab("Restriction Distance in Miles") +
+  scale_x_continuous(breaks = seq(0, 70, 5)) +
+  scale_y_continuous(breaks = seq(0, 0.3, 0.02)) +
+  geom_smooth(aes(ObjectId, Restriction_Distance_Miles), method = "lm")
+
+MBTAplot2 + geom_bar(aes(ObjectId, Restriction_Distance_Miles, fill = Restriction_Distance_Miles), stat = "identity") +
+  guides(fill="none") +
+  xlab("Track Section ID") +
+  ylab("Restriction Distance in Miles") +
+  scale_x_continuous(breaks = seq(0, 168, 5), guide = guide_axis(n.dodge = 3)) +
+  scale_y_continuous(breaks = seq(0, 1, 0.05)) +
+  geom_smooth(aes(ObjectId, Restriction_Distance_Miles), method = "lm")
+
+```
+
+Figure 2.2: Histograms detailing the restriction speeds by report ID, for January and February 2023.
+
+Observe that for the figure above, it is not as easy to discern a consistent mean through the bars alone, as they are
+more erratic in this instance. This is especially true for the graph on the right, which has a major outlier in the
+center. Observing the trend line gives the reader a clearer picture of the consistent restriction distance, as it is
+once again almost flat for both graphs.
+
+## 3 Linear Regression Model For Speed Restriction Distance
+
+```{r Figure_3.1, out.width="50%", echo = FALSE, warning=FALSE}
+# Extract Restriction Distance MPH columns
+max_length <- max(c(length(MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Distance_Miles), length(MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Distance_Miles)))
+
+SRdistance <- data.frame(col1 = c(MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Distance_Miles, rep(NA, max_length - length(MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Distance_Miles))), 
+                      col2 = c(MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Distance_Miles, 
+                               rep(NA, max_length - length(MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Distance_Miles))))
+
+# Unlist the data frame and omit NA values
+SRdistance <- as.data.frame(unlist(SRdistance))
+SRdistance <- na.omit(SRdistance)
+
+# Rename column to Restriction Speed MPH
+colnames(SRdistance)[1] = "Restriction_Distance_Miles"
+
+# Create objectid column
+SRdistance$ObjectID <- seq(1, 238)
+
+# Create new plot for SR speed for Jan and Feb
+MBTAtotalplot <- ggplot(SRdistance)
+
+# Create linear regression model
+MBTAtotalplot + geom_point(aes(ObjectID, Restriction_Distance_Miles)) +
+  geom_smooth(aes(ObjectID, Restriction_Distance_Miles), method = "lm", formula = y~x) +
+  xlab("Track Section ID") +
+  ylab("Restriction Distance in Miles") +
+  scale_x_continuous(breaks = seq(0., 300, 25))
+```
+
+```{r Figure_3.2, out.width="50%", fig.show = "hold", echo = FALSE}
+# Residuals vs. fitted
+model <- lm(ObjectID ~ Restriction_Distance_Miles, SRdistance)
+
+ggplot(model, aes(x = .fitted, y = .resid)) +
+  geom_point() +
+  geom_hline(yintercept = 0) +
+  xlab("Fitted") +
+  ylab("Residual") +
+  labs(title = "Fitted vs. Residual")
+
+# Create QQ plot
+ggplot(SRdistance, aes(sample = Restriction_Distance_Miles)) +
+  stat_qq() + 
+  stat_qq_line() +
+  labs(title = "Q-Q Plot")
+```
+Figure 3.1: Linear regression model of restriction distances for January through February.
+
+The linear regression model was constructed by taking the reported speed restriction data and combining them into a
+single column. The object ID value organizes the speed restriction reports in the order they were submitted. As
+observed in the linear regression model, there appears to be no correlation between the restriction distance and the
+order in which the restriction distances were reported, as indicated by the line of fit which is almost flat. Also worth
+noting is the residual plot. Under normal circumstances, the points being scattered indicates normal distribution. While
+the points are scattered to an extent, they appeared to shift leftwards, with only a few outliers on the right. Thus, we
+cannot assume the data has a normal distribution.
+
+Further evidence the data is not normally distributed can be observed in the Q-Q plot. The points on a Q-Q plot lying
+on or near a diagonal line would be indicative of a normal distribution. However, in this case, it appears as though
+the points only lie on the diagonal up to a certain area on the diagonal, where the points suddenly deviate upwards.
+Both observations lead to the conclusion that the data is not normally distributed.
+
+```{r Regression_Coefficients, echo = FALSE}
+summary(lm(formula = Restriction_Distance_Miles ~ ObjectID, data = SRdistance))
+```
+In practice, we want a high $R^2$ value, so that the regression model may fit our observations. Unfortunately, as observed from the values above, it is made clear that the $R^2$ value is in actuality quite low, and thus the regression model created above is not suited for our observations. However, this does not mean the regression model has no use. At the very least, it is precisely because the $R^2$ value is low that the regression model indicates much of the variation in the restriction distance cannot be explained. 
+
+Recall that in the previous section we discussed how the majority of speed restrictions were put in place due to track wear and tear. Given that much of the variation in the linear regression model is unexplainable, we can assume that track wear and tear is a mechanical problem which is often difficult to make predictions on. We can also bring human error into the equation, which can be a significant source for variation given its unpredictability. Other observations can be derived from the low $R^2$ score, but for the time being it would be best to retain the notion that the regression model has a large amount of unexplainable variation, and should not be relied upon for its precision.
+
+## 4 Potential Correlations Between Track Section and Maximum Speed Restrictions
+
+The data set includes speed restriction data on four lines. While this may not seem like many, it is worth noting that each line is extensive, and splits off into multiple branches. Each branch then contains a section of track, in which a speed restriction is reported. With that in mind, we will examine the maximum restriction speed for each branch, and see if the track section has any effect on the aforementioned speed limit.
+
+It is worth keeping in mind that the column used to refer to the track sections is referred to in the data set as "Location Description," as it is the only column with location-related discrete values with recurring values. This is due to the fact that while each track section has a unique speed restriction, the track section is not an official component of the overall track. Thus, it is possible for branches and lines of the track to have multiple speed restrictions.
+
+The correlation will be determined with a chi-square test.
+
+```{r chi-square_test, echo=FALSE, message=FALSE, warning=FALSE}
+# Extract Restriction Speed MPH columns
+max_length <- max(c(length(MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Speed_MPH), length(MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Speed_MPH)))
+
+SRspeed <- data.frame(col1 = c(MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Speed_MPH, rep(NA, max_length - length(MBTA_Rapid_Transit_Speed_Restrictions$Restriction_Speed_MPH))), 
+                      col2 = c(MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Speed_MPH, 
+                               rep(NA, max_length - length(MBTA_Rapid_Transit_Speed_Restrictions_February_2023$Restriction_Speed_MPH))))
+
+# Unlist the data frame and omit NA values
+SRspeed <- as.data.frame(unlist(SRspeed))
+SRspeed <- na.omit(SRspeed)
+
+# Rename column to Restriction Speed MPH
+colnames(SRspeed)[1] = "Restriction_Speed_MPH"
+
+# Create objectid column
+SRspeed$ObjectID <- seq(1, 238)
+
+summary(lm(formula = Restriction_Speed_MPH ~ ObjectID, data = SRspeed))
+
+chisq.test(SRspeed)
+```
+
+|Chi-square testing independence of restriction speed and track section ID|
+|:--------|:---------:|
+| Degrees of Freedom | 475 |
+| Test Statistic ($X^2$) | 2698 |
+| p-value | 2.2e-16 |
+
+Since the p-value is very close to zero, we can conclude that the restriction speed is not independent of the track section it was assigned to. This result is not unexpected, since while restriction distance and max restriction speed are separate values, the area in which the speed restriction takes place on would undeniably have some influence to how fast or slow the trains are allowed to travel in that specific area. Location determines the terrain and environment the track is on, which not only affects how the track may be worn down over time, but also how accessible the track may be in the event the track section requires maintenance.
+
+Thus, it is expected that the maximum speed restriction would vary greatly for each branch, as each branch occurs in a different location. We are able to directly observe this by visualizing the data relevant to this observation.
+
+```{r Figure_4.1, out.width="50%", fig.show="hold", echo=FALSE, warning=FALSE}
+# Density plot of max restriction speed per branch in January and February
+
+MBTAplot + geom_density(aes(Restriction_Speed_MPH, after_stat(count), fill = Branch), position = "fill") +
+  xlab("Restriction Speed (mph)") +
+  labs(title = "January")
+
+MBTAplot2 + geom_density(aes(Restriction_Speed_MPH, after_stat(count), fill = Branch), position = "fill") +
+  xlab("Restriction Speed (mph)") +
+  labs(title = "February")
+```
+
+Figure 4.1: Density plot of maximum restriction speed per branch in January and February.
+
+From the figure above it is clear to see that both the amount and maximum speed restriction vary greatly for each branch, with the Red Line and Orange Line suffering the most from track wear and tear. This is consistent in both density graphs. Although curiously enough, there were no speed restrictions reported in the month of February for the Blue Line.
+
+## 5 Conclusion
+
+We summarize our statistical findings below.
+
+* The bar plots listing the restriction distance and total track length have vastly different scales, yet are virtually identical in shape. We concluded that this was due to the track section length and restriction distance length being directly proportional, and that the length of the track section where the speed restriction is assigned must adhere to a designated length, most likely for data consistency and efficiency of track maintenance.
+
+* A hypothesis test was used to test if the restriction speed and restriction distance changed over the course of January and February. We concluded from the results that neither changed, which was partially to be expected since both values are related and would undeniably have some form of correlation.
+
+* A linear regression model as well as a Q-Q plot of the restriction distance continuing between January and February was constructed. Both indicated the data set was not normally distributed.
+
+* We used a chi-square test to test whether the restriction speed was independent of the track section it was assigned to. We concluded this was not the case, and that the restriction speed was not independent of the track section. We expected this outcome, since the location in which the speed restriction is assigned introduces a myriad of variables which affects how fast the train may travel for that specific location.
+
+## 6 Potential Extensions For Data Research
+
+* Since the vast majority of speed restrictions are due to track wear and tear, it may be beneficial to specify in a different column any aspects contributing to the wear and tear (constant usage, weather, terrain, etc). This would provide more insight on MBTA operation efficiency, and provide more reliable predictions on when these speed restrictions may be lifted.
+
+* The fact that no speed restrictions were reported on the Blue Line is very curious. This warrants investigation, and begs the question of whether the Blue Line simply operates that well, or if there is potentially missing data that is skewing our observations.
+
+* I have personally experienced significant speed restrictions on the Red Line, and this data set indicates that the Red Line indeed has the most speed restrictions. The data sets include speed restriction data for January and February of 2023, but it may be beneficial to include data sets of more recent months to improve regression analysis and observation accuracy, assuming they have been constructed and are available to research.

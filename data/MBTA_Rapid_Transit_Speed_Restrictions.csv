@@ -1,0 +1,71 @@
+﻿SR_Report_As_of_Date,ID,Line,Branch,Track_Name,Location_Description,Restriction_Reason,Restriction_Speed_MPH,Date_Restriction_Reported,Restriction_Distance_Miles,Restriction_Distance_Feet,Restricted_Track_Pct,Total_Track_Miles,ObjectId
+2023/01/31 05:00:00+00,381513,Green Line,Green Line B,GL Kenmore-Boston Col. EB,EB BU East to Blandford St,Track,10 mph,2022/02/22 05:00:00+00,0.095,500,0.011,8.5,1
+2023/01/31 05:00:00+00,399877,Green Line,Green Line B,GL Kenmore-Boston Col. EB,EB Packard's Corner Station,Track,6 mph,2022/04/11 04:00:00+00,0.038,200,0.004,8.5,2
+2023/01/31 05:00:00+00,511949,Green Line,Green Line B,GL Kenmore-Boston Col. EB,EB South St to Chestnut Hill Ave,Track,6 mph,2023/01/26 05:00:00+00,0.095,500,0.011,8.5,3
+2023/01/31 05:00:00+00,325637,Green Line,Green Line C,GL Kenmore-Cleveland Cir. WB,WB Englewood Ave to Cleveland Cir.,Track,10 mph,2021/09/09 04:00:00+00,0.026,137,0.004,6,4
+2023/01/31 05:00:00+00,230851,Green Line,Green Line D,GL Kenmore-Riverside WB,WB Kenmore to Fenway,Track,3 mph,2020/12/24 05:00:00+00,0.019,100,0.001,18.8,5
+2023/01/31 05:00:00+00,325606,Green Line,Green Line E,GL Copley-Heath St. EB,EB Museum of Fine Arts to Northeastern,Track,10 mph,2021/09/09 04:00:00+00,0.095,500,0.019,5.1,6
+2023/01/31 05:00:00+00,325612,Green Line,Green Line E,GL Copley-Heath St. WB,WB Northeastern to Museum of Fine Arts,Track,10 mph,2021/09/09 04:00:00+00,0.095,500,0.019,5.1,7
+2023/01/31 05:00:00+00,329396,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave EB,EB Boylston Station,Track,10 mph,2021/09/22 04:00:00+00,0.227,1200,0.016,13.9,8
+2023/01/31 05:00:00+00,1E,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave EB,EB Arlington to Boylston,Track,6 mph,2021/09/24 04:00:00+00,0.021,112,0.002,13.9,9
+2023/01/31 05:00:00+00,334870,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave EB,EB North Sta. to Science Park,Track,6 mph,2021/10/05 04:00:00+00,0.051,270,0.004,13.9,10
+2023/01/31 05:00:00+00,358277,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave EB,EB Science Park to Lechmere,Construction,10 mph,2021/12/17 05:00:00+00,0.282,1490,0.02,13.9,11
+2023/01/31 05:00:00+00,443512,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave EB,EB North Sta. to Science Park,Track,5 mph,2022/07/12 04:00:00+00,0.028,150,0.002,13.9,12
+2023/01/31 05:00:00+00,329925,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave WB,WB Hynes to Kenmore,Track,6 mph,2021/09/23 04:00:00+00,0.066,350,0.005,13.9,13
+2023/01/31 05:00:00+00,1W,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave WB,WB Boylston to Arlington,Track,6 mph,2021/09/24 04:00:00+00,0.021,112,0.002,13.9,14
+2023/01/31 05:00:00+00,334875,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave WB,WB Boylston to Arlington,Track,10 mph,2021/10/05 04:00:00+00,0.04,210,0.003,13.9,15
+2023/01/31 05:00:00+00,358285,Green Line,"Green Line, Medford & Trunk",GL Kenmore-College Ave WB,WB Lechmere to Science Park,Construction,10 mph,2021/12/17 05:00:00+00,0.282,1490,0.02,13.9,16
+2023/01/31 05:00:00+00,406234,Mattapan Line,Mattapan Line,Mattapan Line NB,NB Capen St to Valley Rd,Track,10 mph,2022/04/27 04:00:00+00,0.303,1600,0.058,5.2,17
+2023/01/31 05:00:00+00,456398,Mattapan Line,Mattapan Line,Mattapan Line NB,NB Mattapan to Capen St.,Track,10 mph,2022/08/12 04:00:00+00,0.109,575,0.021,5.2,18
+2023/01/31 05:00:00+00,406240,Mattapan Line,Mattapan Line,Mattapan Line SB,SB Central Ave to Valley Road,Track,10 mph,2022/04/27 04:00:00+00,0.114,600,0.022,5.2,19
+2023/01/31 05:00:00+00,471451,Orange Line,Orange Line,OL NB,NB Tufts Medical Sta.,Track,18 mph,2022/09/23 04:00:00+00,0.208,1100,0.009,22.3,20
+2023/01/31 05:00:00+00,498186,Orange Line,Orange Line,OL NB,NB Tufts Med. to Chinatown,Track,10 mph,2022/12/12 05:00:00+00,0.114,600,0.005,22.3,21
+2023/01/31 05:00:00+00,504693,Orange Line,Orange Line,OL NB,NB Jackson Sq. Station,Vehicle,18 mph,2023/01/05 05:00:00+00,0.087,460,0.004,22.3,22
+2023/01/31 05:00:00+00,504694,Orange Line,Orange Line,OL NB,NB Back Bay to Tufts Med.,Vehicle,18 mph,2023/01/05 05:00:00+00,0.111,588,0.005,22.3,23
+2023/01/31 05:00:00+00,504695,Orange Line,Orange Line,OL NB,NB Wellington to Malden,Vehicle,25 mph,2023/01/05 05:00:00+00,0.121,641,0.005,22.3,24
+2023/01/31 05:00:00+00,504696,Orange Line,Orange Line,OL NB,NB Malden Station,Vehicle,18 mph,2023/01/05 05:00:00+00,0.101,534,0.005,22.3,25
+2023/01/31 05:00:00+00,512251,Orange Line,Orange Line,OL NB,NB Tufts Medical Sta.,Track,10 mph,2023/01/29 05:00:00+00,0.189,1000,0.008,22.3,26
+2023/01/31 05:00:00+00,471445,Orange Line,Orange Line,OL SB,SB Tufts Medical Station,Track,18 mph,2022/09/23 04:00:00+00,0.17,900,0.008,22.3,27
+2023/01/31 05:00:00+00,473078,Orange Line,Orange Line,OL SB,SB Jackson Sq. to Stony Brook,Track,25 mph,2022/09/27 04:00:00+00,0.061,320,0.003,22.3,28
+2023/01/31 05:00:00+00,481986,Orange Line,Orange Line,OL SB,SB Chinatown to Tufts Med.,Track,25 mph,2022/10/18 04:00:00+00,0.057,300,0.003,22.3,29
+2023/01/31 05:00:00+00,486386,Orange Line,Orange Line,OL SB,SB Tufts Med. to Back Bay,Track,25 mph,2022/10/27 04:00:00+00,0.136,717,0.006,22.3,30
+2023/01/31 05:00:00+00,488828,Orange Line,Orange Line,OL SB,SB Assembly to Sullivan,Track,25 mph,2022/11/02 04:00:00+00,0.076,400,0.003,22.3,31
+2023/01/31 05:00:00+00,491315,Orange Line,Orange Line,OL SB,SB Comm. College to North Sta.,Track,25 mph,2022/11/17 05:00:00+00,0.273,1440,0.012,22.3,32
+2023/01/31 05:00:00+00,495892,Orange Line,Orange Line,OL SB,SB Assembly to Sullivan,Track,10 mph,2022/12/06 05:00:00+00,0.057,300,0.003,22.3,33
+2023/01/31 05:00:00+00,498029,Orange Line,Orange Line,OL SB,SB Comm. College to North Sta.,Track,10 mph,2022/12/10 05:00:00+00,0.076,400,0.003,22.3,34
+2023/01/31 05:00:00+00,504675,Orange Line,Orange Line,OL SB,SB Malden to Wellington,Vehicle,25 mph,2023/01/05 05:00:00+00,0.117,620,0.005,22.3,35
+2023/01/31 05:00:00+00,504676,Orange Line,Orange Line,OL SB,SB Malden to Wellington,Vehicle,18 mph,2023/01/05 05:00:00+00,0.115,606,0.005,22.3,36
+2023/01/31 05:00:00+00,504677,Orange Line,Orange Line,OL SB,SB Wellington to Assembly,Vehicle,25 mph,2023/01/05 05:00:00+00,0.105,552,0.005,22.3,37
+2023/01/31 05:00:00+00,504678,Orange Line,Orange Line,OL SB,SB Wellington to Assembly,Vehicle,18 mph,2023/01/05 05:00:00+00,0.189,999,0.008,22.3,38
+2023/01/31 05:00:00+00,504680,Orange Line,Orange Line,OL SB,SB Sullivan Station,Vehicle,18 mph,2023/01/05 05:00:00+00,0.097,510,0.004,22.3,39
+2023/01/31 05:00:00+00,504681,Orange Line,Orange Line,OL SB,SB Comm. College to North Sta.,Vehicle,25 mph,2023/01/05 05:00:00+00,0.193,1021,0.009,22.3,40
+2023/01/31 05:00:00+00,504682,Orange Line,Orange Line,OL SB,SB North Station,Vehicle,18 mph,2023/01/05 05:00:00+00,0.096,506,0.004,22.3,41
+2023/01/31 05:00:00+00,504683,Orange Line,Orange Line,OL SB,SB Haymarket Station,Vehicle,18 mph,2023/01/05 05:00:00+00,0.078,411,0.003,22.3,42
+2023/01/31 05:00:00+00,504691,Orange Line,Orange Line,OL SB,SB Tufts Medical Station,Vehicle,18 mph,2023/01/05 05:00:00+00,0.096,505,0.004,22.3,43
+2023/01/31 05:00:00+00,423051,Red Line,Red Line,RL Alewife-Braintree NB,NB North Quincy to JFK,Track,25 mph,2022/05/18 04:00:00+00,0.038,200,0.001,41.9,44
+2023/01/31 05:00:00+00,437055,Red Line,Red Line,RL Alewife-Braintree NB,NB Park to Charles,Track,25 mph,2022/06/27 04:00:00+00,0.114,600,0.003,41.9,45
+2023/01/31 05:00:00+00,489843,Red Line,Red Line,RL Alewife-Braintree NB,NB Quincy Adams to Quincy Center,Track,10 mph,2022/11/07 05:00:00+00,0.246,1300,0.006,41.9,46
+2023/01/31 05:00:00+00,489988,Red Line,Red Line,RL Alewife-Braintree NB,NB Central to Harvard,Track,25 mph,2022/11/08 05:00:00+00,0.114,600,0.003,41.9,47
+2023/01/31 05:00:00+00,490419,Red Line,Red Line,RL Alewife-Braintree NB,NB Park to Charles,Track,10 mph,2022/11/10 05:00:00+00,0.114,600,0.003,41.9,48
+2023/01/31 05:00:00+00,505090,Red Line,Red Line,RL Alewife-Braintree NB,NB North Quincy to JFK,Track,10 mph,2023/01/09 05:00:00+00,0.095,500,0.002,41.9,49
+2023/01/31 05:00:00+00,505837,Red Line,Red Line,RL Alewife-Braintree NB,NB North Quincy to JFK,Track,25 mph,2023/01/10 05:00:00+00,0.114,600,0.003,41.9,50
+2023/01/31 05:00:00+00,508520,Red Line,Red Line,RL Alewife-Braintree NB,NB JFK Station (Braintree),Track,10 mph,2023/01/13 05:00:00+00,0.114,600,0.003,41.9,51
+2023/01/31 05:00:00+00,509898,Red Line,Red Line,RL Alewife-Braintree NB,NB Broadway to South Sta.,Track,10 mph,2023/01/18 05:00:00+00,0.265,1400,0.006,41.9,52
+2023/01/31 05:00:00+00,511201,Red Line,Red Line,RL Alewife-Braintree NB,NB Park to Charles,Track,10 mph,2023/01/25 05:00:00+00,0.114,600,0.003,41.9,53
+2023/01/31 05:00:00+00,511204,Red Line,Red Line,RL Alewife-Braintree NB,NB Park St Station,Track,25 mph,2023/01/25 05:00:00+00,0.114,600,0.003,41.9,54
+2023/01/31 05:00:00+00,511489,Red Line,Red Line,RL Alewife-Braintree NB,NB North Quincy to JFK,Track,10 mph,2023/01/26 05:00:00+00,0.114,600,0.003,41.9,55
+2023/01/31 05:00:00+00,512207,Red Line,Red Line,RL Alewife-Braintree NB,NB South Station,Track,10 mph,2023/01/27 05:00:00+00,0.114,600,0.003,41.9,56
+2023/01/31 05:00:00+00,336986,Red Line,Red Line,RL Alewife-Braintree SB,SB Park to Downtown Cross.,Track,10 mph,2021/10/13 04:00:00+00,0.133,700,0.003,41.9,57
+2023/01/31 05:00:00+00,463167,Red Line,Red Line,RL Alewife-Braintree SB,SB JFK to North Quincy,Track,10 mph,2022/09/02 04:00:00+00,0.259,1366,0.006,41.9,58
+2023/01/31 05:00:00+00,486881,Red Line,Red Line,RL Alewife-Braintree SB,SB Harvard to Central,Track,10 mph,2022/10/28 04:00:00+00,0.208,1100,0.005,41.9,59
+2023/01/31 05:00:00+00,490317,Red Line,Red Line,RL Alewife-Braintree SB,SB Wollaston to Quincy Center,Track,25 mph,2022/11/09 05:00:00+00,0.189,1000,0.005,41.9,60
+2023/01/31 05:00:00+00,490414,Red Line,Red Line,RL Alewife-Braintree SB,SB Andrew to JFK,Track,25 mph,2022/11/10 05:00:00+00,0.114,600,0.003,41.9,61
+2023/01/31 05:00:00+00,490421,Red Line,Red Line,RL Alewife-Braintree SB,SB Park St Station,Track,10 mph,2022/11/10 05:00:00+00,0.114,600,0.003,41.9,62
+2023/01/31 05:00:00+00,492296,Red Line,Red Line,RL Alewife-Braintree SB,SB JFK to North Quincy,Track,25 mph,2022/11/24 05:00:00+00,0.114,600,0.003,41.9,63
+2023/01/31 05:00:00+00,501767,Red Line,Red Line,RL Alewife-Braintree SB,SB JFK to North Quincy,Track,10 mph,2022/12/29 05:00:00+00,0.114,600,0.003,41.9,64
+2023/01/31 05:00:00+00,501845,Red Line,Red Line,RL Alewife-Braintree SB,SB Andrew to JFK,Track,10 mph,2022/12/30 05:00:00+00,0.114,600,0.003,41.9,65
+2023/01/31 05:00:00+00,503815,Red Line,Red Line,RL Alewife-Braintree SB,SB JFK to North Quincy,Track,10 mph,2023/01/03 05:00:00+00,0.114,600,0.003,41.9,66
+2023/01/31 05:00:00+00,509920,Red Line,Red Line,RL Alewife-Braintree SB,SB South Sta. to Broadway,Track,10 mph,2023/01/18 05:00:00+00,0.265,1400,0.006,41.9,67
+2023/01/31 05:00:00+00,509957,Red Line,Red Line,RL Alewife-Braintree SB,SB Downtown Cross. to South Sta.,Track,10 mph,2023/01/18 05:00:00+00,0.152,800,0.004,41.9,68
+2023/01/31 05:00:00+00,510311,Red Line,Red Line,RL Alewife-Braintree SB,SB Broadway to Andrew,Track,10 mph,2023/01/20 05:00:00+00,0.114,600,0.003,41.9,69
+2023/01/31 05:00:00+00,477428,Red Line,Red Line,RL JFK-Ashmont SB,SB Fields Corner Station,Track,10 mph,2022/10/04 04:00:00+00,0.152,800,0.004,41.9,70
