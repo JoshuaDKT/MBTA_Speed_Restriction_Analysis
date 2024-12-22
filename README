@@ -1,3 +1,21 @@
+## MBTA Speed Restriction Analysis
+
 This project was created for my final assignment in my Computational Statistics course. In here, you may find a thorough
 analysis of MBTA (Massachusetts Boston Transit Authority) speed restriction data during the year 2023. The project was
-coded in RMarkdown format to provide an easy-to-read and accessible 
+coded in RMarkdown format to provide an easy-to-read and accessible report for my findings.
+
+## Overview
+
+While overviews are generally reserved for the README file, it has been allocated in Main.Rmd to fulfill formatting
+requirements for the assignment. The same applies for the dataset, source, and description.
+
+## Installation
+
+1. Install R and RStudio.
+2. Install the packages required, using this code:
+   ```r
+   install.packages(c("tidyverse", "ggplot2", "dplyr", "readr))
+```
+3. Go to the main file, and access the graphs by clicking on the green play button, which will run the current chunk.
+Note that if you run into any errors, you may need to load the previous chunks, which can be done by clicking the button
+left of the run current chunk button.
